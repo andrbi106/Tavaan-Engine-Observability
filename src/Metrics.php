@@ -4,26 +4,104 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Observability;
 
+/**
+ * Metrics — counter / gauge / histogram / timer registry.
+ */
 final class Metrics
 {
-    public function counter()
+    /** @var array<string, float> */
+    private array $counters = [];
+    /** @var array<string, float> */
+    private array $gauges = [];
+    /** @var array<string, array<float>> */
+    private array $histograms = [];
+    /** @var array<string, float> */
+    private array $timers = [];
+
+    /**
+     * counter — increment (or return value when no args).
+     * @return float|self
+     */
+    public function counter(string $name, float $value = 1.0, array $labels = []): float|self
     {
-        return null;
+        if (func_num_args() === 0 || func_num_args() === 1 && $value === 1.0) {
+            // single-arg call => return value
+        }
+        $key = $name . $this->labelsKey($labels);
+        if (func_num_args() <= 1 && $value === 1.0) {
+            return $this->counters[$key] ?? 0.0;
+        }
+        $this->counters[$key] = ($this->counters[$key] ?? 0.0) + $value;
+        return $this;
     }
-    public function gauge()
+
+    /**
+     * gauge — set or return gauge value.
+     * @return float|self
+     */
+    public function gauge(string $name, ?float $value = null, array $labels = []): float|self
     {
-        return null;
+        $key = $name . $this->labelsKey($labels);
+        if ($value === null) {
+            return $this->gauges[$key] ?? 0.0;
+        }
+        $this->gauges[$key] = $value;
+        return $this;
     }
-    public function histogram()
+
+    /**
+     * histogram — observe a value or return observations.
+     * @return array<float>|self
+     */
+    public function histogram(string $name, ?float $value = null, array $labels = []): array|self
     {
-        return null;
+        $key = $name . $this->labelsKey($labels);
+        if ($value === null) {
+            return $this->histograms[$key] ?? [];
+        }
+        $this->histograms[$key][] = $value;
+        return $this;
     }
-    public function timer()
+
+    /**
+     * timer — start/stop timing or return elapsed.
+     * @return float|self
+     */
+    public function timer(string $name, ?float $elapsedMs = null, array $labels = []): float|self
     {
-        return null;
+        $key = $name . $this->labelsKey($labels);
+        if ($elapsedMs === null) {
+            // start: return a starter closure
+            $start = microtime(true);
+            $this->timers[$key . '_start'] = $start;
+            return $this;
+        }
+        $this->histograms[$key][] = $elapsedMs;
+        return $this;
     }
-    public function collect()
+
+    /**
+     * collect — return all metrics in Prometheus-like format.
+     * @return array<string, mixed>
+     */
+    public function collect(): array
     {
-        return null;
+        return [
+            'counters' => $this->counters,
+            'gauges' => $this->gauges,
+            'histograms' => $this->histograms,
+            'timers' => $this->timers,
+        ];
+    }
+
+    private function labelsKey(array $labels): string
+    {
+        if ($labels === []) { return ''; }
+        ksort($labels);
+        $parts = [];
+        foreach ($labels as $k => $v) {
+            $parts[] = "{$k}=" . (string) $v;
+        }
+        return '{' . implode(',', $parts) . '}';
     }
 }
