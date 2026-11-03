@@ -12,7 +12,7 @@ final class Health
     }
     public function check(/* ... */): mixed
     {
-        return null;
+        return $this->user !== null;
     }
     public function live(/* ... */): mixed
     {
