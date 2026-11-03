@@ -19,20 +19,25 @@ final class Metrics
     private array $timers = [];
 
     /**
-     * counter — increment (or return value when no args).
-     * @return float|self
+     * counter — increment a counter by $value (default 1).
+     * To read the current value, use countOf().
+     * @param array<string, mixed> $labels
      */
-    public function counter(string $name, float $value = 1.0, array $labels = []): float|self
+    public function counter(string $name, float $value = 1.0, array $labels = []): self
     {
-        if (func_num_args() === 0 || func_num_args() === 1 && $value === 1.0) {
-            // single-arg call => return value
-        }
         $key = $name . $this->labelsKey($labels);
-        if (func_num_args() <= 1 && $value === 1.0) {
-            return $this->counters[$key] ?? 0.0;
-        }
         $this->counters[$key] = ($this->counters[$key] ?? 0.0) + $value;
         return $this;
+    }
+
+    /**
+     * countOf — return the current value of a counter.
+     * @param array<string, mixed> $labels
+     */
+    public function countOf(string $name, array $labels = []): float
+    {
+        $key = $name . $this->labelsKey($labels);
+        return $this->counters[$key] ?? 0.0;
     }
 
     /**
