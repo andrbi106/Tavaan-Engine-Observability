@@ -1,0 +1,17 @@
+{
+    "name": "andrbi106/tavaan-engine-observability",
+    "description": "Tavaan Observability engine — رصدپذیری",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.2.0",
+        "andrbi106/tavaan-engine-core": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tavaan\\Engine\\Observability\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
