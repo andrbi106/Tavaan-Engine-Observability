@@ -8,7 +8,7 @@ final class Health
 {
     public function add(/* ... */): mixed
     {
-        return null;
+        return $this;
     }
     public function check(/* ... */): mixed
     {
