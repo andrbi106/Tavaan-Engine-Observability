@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Observability\Tests\Feature;
 
-use PHPUnit\Framework\TestCase;
+use Tavaan\Testing\TestCase;
 use Tavaan\Engine\Observability\ObservabilityServiceProvider;
 use Tavaan\Engine\Observability\MetricsManager;
 use Tavaan\Engine\Observability\TraceManager;
