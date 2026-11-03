@@ -70,33 +70,44 @@ final class MetricsManager
         $output = '';
         foreach ($this->metrics as $name => $metric) {
             if ($metric instanceof Counter) {
-                $output .= "# HELP {$name} {$metric->help}\n";
-                $output .= "# TYPE {$name} counter\n";
+                $output .= "# HELP {$name} {$metric->help}
+";
+                $output .= "# TYPE {$name} counter
+";
                 foreach ($metric->all() as $labelKey => $value) {
                     $labels = \json_decode($labelKey, true) ?: [];
                     $labelStr = $this->formatLabels($labels);
-                    $output .= "{$name}{$labelStr} {$value}\n";
+                    $output .= "{$name}{$labelStr} {$value}
+";
                 }
             } elseif ($metric instanceof Gauge) {
-                $output .= "# HELP {$name} {$metric->help}\n";
-                $output .= "# TYPE {$name} gauge\n";
+                $output .= "# HELP {$name} {$metric->help}
+";
+                $output .= "# TYPE {$name} gauge
+";
                 foreach ($metric->all() as $labelKey => $value) {
                     $labels = \json_decode($labelKey, true) ?: [];
                     $labelStr = $this->formatLabels($labels);
-                    $output .= "{$name}{$labelStr} {$value}\n";
+                    $output .= "{$name}{$labelStr} {$value}
+";
                 }
             } elseif ($metric instanceof Histogram) {
-                $output .= "# HELP {$name} {$metric->help}\n";
-                $output .= "# TYPE {$name} histogram\n";
+                $output .= "# HELP {$name} {$metric->help}
+";
+                $output .= "# TYPE {$name} histogram
+";
                 foreach ($metric->all() as $labelKey => $data) {
                     $labels = \json_decode($labelKey, true) ?: [];
                     $labelStr = $this->formatLabels($labels);
                     foreach ($data['buckets'] as $i => $count) {
                         $bucketLabels = $this->formatLabels(\array_merge($labels, ['le' => (string) $i]));
-                        $output .= "{$name}_bucket{$bucketLabels} {$count}\n";
+                        $output .= "{$name}_bucket{$bucketLabels} {$count}
+";
                     }
-                    $output .= "{$name}_count{$labelStr} {$data['count']}\n";
-                    $output .= "{$name}_sum{$labelStr} {$data['sum']}\n";
+                    $output .= "{$name}_count{$labelStr} {$data['count']}
+";
+                    $output .= "{$name}_sum{$labelStr} {$data['sum']}
+";
                 }
             }
         }
