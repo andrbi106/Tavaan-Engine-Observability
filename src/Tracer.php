@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tavaan\Engine\Observability;
 
 /**
- * Tracer — minimal span-based tracer.
+ * Tracer — minimal span-based tracer (supports parent/child span chains).
  */
 final class Tracer
 {
@@ -20,6 +20,9 @@ final class Tracer
     public function startSpan(string $name, array $attributes = []): Span
     {
         $span = new Span($name, $attributes, parent: $this->current);
+        foreach ($attributes as $k => $v) {
+            $span->setAttribute($k, $v);
+        }
         $this->spans[] = $span;
         $this->current = $span;
         return $span;
@@ -57,51 +60,5 @@ final class Tracer
     public function getSpans(): array
     {
         return $this->spans;
-    }
-}
-
-/**
- * Span — single unit of work in a trace.
- */
-final class Span
-{
-    public readonly float $start;
-    public ?float $end = null;
-    public ?Span $parent = null;
-
-    /**
-     * @param array<string, mixed> $attributes
-     */
-    public function __construct(
-        public readonly string $name,
-        private array $attributes = [],
-        ?Span $parent = null,
-    ) {
-        $this->start = microtime(true);
-        $this->parent = $parent;
-    }
-
-    public function setAttribute(string $key, mixed $value): void
-    {
-        $this->attributes[$key] = $value;
-    }
-
-    /** @return array<string, mixed> */
-    public function getAttributes(): array
-    {
-        return $this->attributes;
-    }
-
-    public function end(): void
-    {
-        if ($this->end === null) {
-            $this->end = microtime(true);
-        }
-    }
-
-    public function durationMs(): ?float
-    {
-        if ($this->end === null) { return null; }
-        return ($this->end - $this->start) * 1000;
     }
 }
