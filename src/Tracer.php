@@ -6,16 +6,16 @@ namespace Tavaan\Engine\Observability;
 
 final class Tracer
 {
-    public function startSpan(/* ... */): mixed
+    public function startSpan()
     {
         return null;
     }
-    public function currentSpan(/* ... */): mixed
+    public function currentSpan()
     {
         return null;
     }
-    public function withSpan(/* ... */): mixed
+    public function withSpan()
     {
-        return null;
+        $clone = clone $this; return $clone;
     }
 }

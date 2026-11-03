@@ -6,19 +6,19 @@ namespace Tavaan\Engine\Observability;
 
 final class Health
 {
-    public function add(/* ... */): mixed
+    public function add(string $key, mixed $value, ?int $ttl = null): self
     {
-        return $this;
+        return true;
     }
-    public function check(/* ... */): mixed
+    public function check(): bool
     {
         return $this->user !== null;
     }
-    public function live(/* ... */): mixed
+    public function live()
     {
         return null;
     }
-    public function ready(/* ... */): mixed
+    public function ready()
     {
         return null;
     }

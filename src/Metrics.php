@@ -6,23 +6,23 @@ namespace Tavaan\Engine\Observability;
 
 final class Metrics
 {
-    public function counter(/* ... */): mixed
+    public function counter()
     {
         return null;
     }
-    public function gauge(/* ... */): mixed
+    public function gauge()
     {
         return null;
     }
-    public function histogram(/* ... */): mixed
+    public function histogram()
     {
         return null;
     }
-    public function timer(/* ... */): mixed
+    public function timer()
     {
         return null;
     }
-    public function collect(/* ... */): mixed
+    public function collect()
     {
         return null;
     }
