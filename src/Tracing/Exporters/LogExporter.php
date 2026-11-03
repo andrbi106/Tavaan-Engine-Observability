@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Observability\Tracing\Exporters;
 
-use Tavaan\Core\Contracts\Log\LoggerInterface;
-use Tavaan\Core\Contracts\Observability\SpanExporterInterface;
-use Tavaan\Core\Contracts\Observability\SpanInterface;
+use Tavaan\Engine\Log\Contracts\LoggerInterface;
+use Tavaan\Engine\Observability\Contracts\SpanExporterInterface;
+use Tavaan\Engine\Observability\Contracts\SpanInterface;
 
 /**
  * تَوان | Tavaan — Observability

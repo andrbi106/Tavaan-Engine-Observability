@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Observability\DebugBar;
 
-use Tavaan\Core\Contracts\Http\MiddlewareInterface;
-use Tavaan\Core\Contracts\Http\RequestInterface;
-use Tavaan\Core\Contracts\Http\ResponseInterface;
+use Tavaan\Engine\Http\Contracts\MiddlewareInterface;
+use Tavaan\Engine\Http\Contracts\RequestInterface;
+use Tavaan\Engine\Http\Contracts\ResponseInterface;
 use Tavaan\Engine\Http\Response;
 use Tavaan\Engine\Http\StreamedResponse;
 

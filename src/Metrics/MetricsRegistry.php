@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Observability\Metrics;
 
-use Tavaan\Core\Contracts\Cache\RepositoryInterface as CacheRepository;
-use Tavaan\Core\Contracts\Observability\MetricsInterface;
+use Tavaan\Engine\Cache\Contracts\RepositoryInterface as CacheRepository;
+use Tavaan\Engine\Observability\Contracts\MetricsInterface;
 use Tavaan\Engine\Observability\Exceptions\ObservabilityException;
 
 /**

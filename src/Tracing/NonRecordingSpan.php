@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Observability\Tracing;
 
-use Tavaan\Core\Contracts\Observability\SpanInterface;
-use Tavaan\Core\Contracts\Observability\StatusCode;
+use Tavaan\Engine\Observability\Contracts\SpanInterface;
+use Tavaan\Engine\Observability\Contracts\StatusCode;
 
 /**
  * تَوان | Tavaan — Observability
