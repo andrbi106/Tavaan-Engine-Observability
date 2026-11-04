@@ -2,6 +2,8 @@
 
 > **رصدپذیری** — موتور Observability در فریمورک تَوان
 
+این موتور از کلاس پایهٔ `Engine` (در [Tavaan-Engine-Core](https://github.com/andrbi106/Tavaan-Engine-Core)) ارث می‌برد.
+
 ## مشخصات
 
 | فیلد | مقدار |
@@ -11,84 +13,60 @@
 | عنوان فارسی | رصدپذیری |
 | نسخه | `0.1.0` |
 | namespace | `Tavaan\Engine\Observability` |
-| نوع | `engine` |
-| Facade | `Metrics` (accessor: `metrics`) |
+| کلاس موتور | `Tavaan\Engine\Observability\ObservabilityEngine` |
+| Facade | Metrics (`metrics`) |
 
-## قراردادها (Contracts)
+## کلاس موتور
 
-این موتور قراردادهای زیر را ارائه می‌دهد:
+```php
+namespace Tavaan\Engine\Observability;
 
-- `Tavaan\Engine\Observability\Contracts\MetricsInterface`
-- `Tavaan\Engine\Observability\Contracts\SpanExporterInterface`
-- `Tavaan\Engine\Observability\Contracts\SpanInterface`
-- `Tavaan\Engine\Observability\Contracts\StatusCode`
+use Tavaan\EngineCore\Engine as BaseEngine;
+use Tavaan\EngineCore\Contracts\EngineManifestInterface;
 
-## خطاها (Exceptions)
+final class ObservabilityEngine extends BaseEngine
+{
+    public function __construct(EngineManifestInterface $manifest)
+    {
+        parent::__construct($manifest);
+    }
 
-- `Tavaan\Engine\Observability\Exceptions\ObservabilityException`
+    public function register(ContainerInterface $container): void
+    {
+        parent::register($container);
+        // bindingهای اختصاصی موتور
+    }
 
-## Facadeها
+    public function boot(): void
+    {
+        parent::boot();
+    }
+}
+```
 
-- `Tavaan\Engine\Observability\Facades\Metrics`
-- `Tavaan\Engine\Observability\Facades\Trace`
+**فایل:** `src/ObservabilityEngine.php`
 
-## کلاس‌های اصلی
+## وابستگی‌ها
 
-- `src/DebugBar/DebugBar.php`
-- `src/DebugBar/DebugBarMiddleware.php`
-- `src/DebugBar/Stopwatch.php`
-- `src/Health.php`
-- `src/Health/CheckResult.php`
-- `src/Health/Down.php`
-- `src/Health/HealthManager.php`
-- `src/Health/Up.php`
-- `src/Http/MetricsMiddleware.php`
-- `src/Metrics.php`
-- `src/Metrics/Metric.php`
-- `src/Metrics/MetricsRegistry.php`
-- `src/Metrics/PrometheusFormatter.php`
-- `src/Metrics/Summary.php`
-- `src/Metrics/Types.php`
-- `src/MetricsManager.php`
-- `src/ObservabilityServiceProvider.php`
-- `src/Span.php`
-- `src/TraceManager.php`
-- `src/Tracer.php`
-- ... و 8 فایل دیگر
+**موتورهای مورد‌نیاز:** `config`, `log`
 
 ## Service Providerها
 
 - `Tavaan\Engine\Observability\ObservabilityServiceProvider`
 
-## وابستگی‌ها
+## سه درگاه ارتباط با سایر موتورها
 
-**موتورهای مورد‌نیاز:**
-
-- `config`
-- `log`
-
-## پیکربندی
-
-- فایل پیکربندی: `config/observability.php`
-- کلید: `observability`
+| درگاه | الگو | متدهای convenience |
+|---|---|---|
+| Container | pull-based DI | `make()`, `bound()` |
+| Events | pub/sub | `dispatch()`, `listen()` |
+| EngineBus | point-to-point RPC | `call()`, `offer()` |
 
 ## نصب
 
 ```bash
 git clone https://github.com/andrbi106/Tavaan-Engine-Observability.git
 ```
-
-این موتور بخشی از فریمورک تَوان است و معمولاً به‌صورت مستقیم نصب نمی‌شود،
-بلکه توسط [Tavaan-Core](https://github.com/andrbi106/Tavaan-Core) مدیریت می‌شود.
-
-## روابط با سایر مخازن
-
-| مخزن | نقش |
-|---|---|
-| **`andrbi106/Tavaan-Engine-Observability`** (این مخزن) | موتور Observability |
-| `andrbi106/Tavaan-Engine-Core` | ساختار پایه + درگاه ارتباط موتورها |
-| `andrbi106/Tavaan-Core` | اسکلت اپلیکیشن + همهٔ موتورها |
-| `Derogaramin/Tavaan-Framework` | فریمورک مادر (monorepo) |
 
 ## مجوز
 
